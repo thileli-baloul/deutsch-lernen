@@ -3,9 +3,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Active-brightgreen.svg" alt="Status" />
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" />
+  <img src="https://img.shields.io/badge/Android-APK%20Ready-3DDC84?logo=android&logoColor=white" alt="Android APK" />
+  <img src="https://img.shields.io/badge/iOS-PWA%20%26%20Xcode-000000?logo=apple&logoColor=white" alt="iOS Support" />
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white" alt="Docker" />
-  <img src="https://img.shields.io/badge/Nginx-Alpine-009639?logo=nginx&logoColor=white" alt="Nginx" />
-  <img src="https://img.shields.io/badge/PWA-Supported-5A0FC8?logo=pwa&logoColor=white" alt="PWA" />
   <img src="https://img.shields.io/badge/Language-Arabic%20%7C%20German-orange" alt="Language" />
 </p>
 
@@ -19,6 +19,10 @@
 
 🌐 **رابط النسخة الحية (Live Demo):**  
 👉 [https://deutsch-lernen.duckdns.org](https://deutsch-lernen.duckdns.org)
+
+📲 **تنزيل التطبيق للهواتف الذكية:**
+- 🤖 **تطبيق الأندرويد (Android APK):** [تحميل ملف DeutschLernen.apk المباشر](https://github.com/thileli-baloul/deutsch-lernen/raw/main/DeutschLernen.apk)
+- 🍎 **تطبيق الآيفون (iOS Project):** [تحميل مشروع DeutschLernen-iOS.zip المباشر](https://github.com/thileli-baloul/deutsch-lernen/raw/main/DeutschLernen-iOS.zip) أو فتح الموقع في Safari وضغط `إضافة إلى الشاشة الرئيسية`.
 
 ---
 
@@ -37,72 +41,15 @@
 
 ## 🛠️ التقنيات المستخدمة (Tech Stack)
 
-### Frontend & Core
+### Frontend & Mobile
 - **HTML5 / CSS3 / JavaScript (ES6+):** بناء الواجهة التفاعلية واستجابتها بدون مكتبات ثقيلة لضمان السرعة الفائقة.
 - **Service Worker & Manifest.json:** دعم تقنية الـ PWA والتخزين المؤقت للعمل Offline.
+- **Capacitor & PWABuilder:** توليد وتغليف تطبيقات Android APK و iOS Xcode Project.
 
 ### Deployment & Infrastructure
 - **Docker & Docker Compose:** تغليف التطبيق في حاوية معزولة لسهولة النشر والتشغيل على أي سيرفر.
 - **Nginx (Alpine):** خادم خفيف للسرعة الفائقة، ضغط الملفات بـ `gzip` وإدارة الكاش بشكل مخصص للـ PWA.
 - **Caddy Reverse Proxy:** خادم التوجيه الخارجي مع تفعيل شهادات الأمان تلقائياً (SSL / Automatic HTTPS).
-
----
-
-## 🏗️ البنية التحتية وهيكلية النشر (Architecture)
-
-```
-[ User Browser ]
-       │
-       ▼ (HTTPS / SSL)
-[ Caddy Reverse Proxy ]
-       │
-       ▼ (Port 8085)
-[ Docker Container (Nginx Alpine) ]
-       │
-       ├── index.html / styles.css / app.js
-       ├── srs.js (Spaced Repetition Logic)
-       └── sw.js (PWA Offline Service Worker)
-```
-
----
-
-## 🚀 كيفية التشغيل محلياً (Local Setup)
-
-### الخيار 1: التشغيل المباشر عبر المتصفح
-1. قم بفتح ملف `index.html` مباشرة في أي متصفح.
-
-### الخيار 2: التشغيل باستخدام Docker
-```bash
-# بناء وتشغيل الحاوية
-docker compose up -d --build
-
-# فتح التطبيق في المتصفح
-http://localhost:8085
-```
-
----
-
-## ☁️ النشر على سيرفر خاص (Production Deployment)
-
-1. **نسخ المشروع للسيرفر:**
-   ```bash
-   scp -O -r . user@your-server:~/deutsch-lernen
-   ```
-2. **تشغيل الحاوية في السيرفر:**
-   ```bash
-   cd ~/deutsch-lernen
-   docker compose up -d --build
-   ```
-3. **إضافة التوجيه في Caddyfile (`/etc/caddy/Caddyfile`):**
-   ```caddy
-   deutsch-lernen.duckdns.org {
-       reverse_proxy localhost:8085
-   }
-   ```
-4. **إعادة تحميل Caddy:**
-   ```bash
-   sudo systemctl reload caddy
-   ```
 
 ---
 
