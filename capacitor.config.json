@@ -1,0 +1,8 @@
+{
+  "appId": "com.deutschlernen.app",
+  "appName": "DeutschLernen",
+  "webDir": ".",
+  "server": {
+    "androidScheme": "https"
+  }
+}
