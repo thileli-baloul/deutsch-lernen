@@ -1,0 +1,24 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Generate Android APK from PWA
+        uses: pwa-builder/pwa-action@v1.0.2
+        with:
+          manifest-url: 'https://deutsch-lernen.duckdns.org/manifest.json'
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DeutschLernen-Android-APK
+          path: '*.apk'
