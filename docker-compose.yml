@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  deutsch-lernen:
+    build: .
+    container_name: deutsch-lernen-app
+    restart: always
+    ports:
+      - "8085:80"

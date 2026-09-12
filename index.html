@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#6c5ce7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>DeutschLernen - تعلم الألمانية</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-icon">🇩🇪</div>
+      <h1 class="splash-title">DeutschLernen</h1>
+      <p class="splash-subtitle">تعلم الألمانية بالعربية</p>
+      <div class="splash-loader">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Container -->
+  <div id="app" class="app hidden">
+    
+    <!-- ===== HOME SCREEN ===== -->
+    <div id="screen-home" class="screen active">
+      <header class="home-header">
+        <div class="header-top">
+          <div class="streak-badge" id="streak-badge">
+            <span class="streak-icon">🔥</span>
+            <span class="streak-count" id="streak-count">0</span>
+          </div>
+          <h1 class="app-title">DeutschLernen</h1>
+          <div class="xp-badge" id="xp-badge">
+            <span class="xp-icon">⭐</span>
+            <span class="xp-count" id="xp-count">0</span>
+          </div>
+        </div>
+        <div class="daily-goal-bar">
+          <div class="goal-info">
+            <span>الهدف اليومي</span>
+            <span id="daily-progress-text">0/10 كلمات</span>
+          </div>
+          <div class="goal-track">
+            <div class="goal-fill" id="daily-progress-fill"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Review Banner -->
+      <div id="review-banner" class="review-banner hidden">
+        <div class="review-banner-content">
+          <div class="review-banner-icon">🧠</div>
+          <div class="review-banner-text">
+            <strong>حان وقت المراجعة!</strong>
+            <span id="review-count-text">لديك 0 كلمات للمراجعة</span>
+          </div>
+        </div>
+        <button class="review-banner-btn" onclick="App.startReviewAll()">مراجعة</button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="quick-action-btn" onclick="App.startQuickLearn()">
+          <span class="qa-icon">📚</span>
+          <span class="qa-text">تعلم سريع</span>
+        </button>
+        <button class="quick-action-btn" onclick="App.startReviewAll()">
+          <span class="qa-icon">🔄</span>
+          <span class="qa-text">مراجعة</span>
+        </button>
+        <button class="quick-action-btn" onclick="App.startSpeedReview()">
+          <span class="qa-icon">⚡</span>
+          <span class="qa-text">مراجعة سريعة</span>
+        </button>
+        <button class="quick-action-btn" onclick="App.startListening()">
+          <span class="qa-icon">🎧</span>
+          <span class="qa-text">استماع</span>
+        </button>
+      </div>
+
+      <!-- Courses List -->
+      <div class="courses-section">
+        <h2 class="section-title">الدورات</h2>
+        <div id="courses-list" class="courses-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== COURSE SCREEN ===== -->
+    <div id="screen-course" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" onclick="App.goHome()">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M9.29 15.88L13.17 12 9.29 8.12a1 1 0 011.41-1.41l4.59 4.59a1 1 0 010 1.41l-4.59 4.59a1 1 0 01-1.41-1.41z"/></svg>
+        </button>
+        <h2 id="course-title" class="screen-title"></h2>
+        <div class="course-level-badge" id="course-level-badge"></div>
+      </header>
+      <div class="course-progress-bar">
+        <div class="course-progress-fill" id="course-progress-fill"></div>
+      </div>
+      <div id="levels-list" class="levels-list"></div>
+    </div>
+
+    <!-- ===== LEARN SCREEN ===== -->
+    <div id="screen-learn" class="screen">
+      <header class="learn-header">
+        <button class="back-btn" onclick="App.exitLearn()">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19 11H7.83l4.88-4.88a1 1 0 00-1.42-1.41l-6.59 6.59a1 1 0 000 1.41l6.59 6.59a1 1 0 001.41-1.41L7.83 13H19a1 1 0 000-2z"/></svg>
+        </button>
+        <div class="learn-progress">
+          <div class="learn-progress-bar">
+            <div class="learn-progress-fill" id="learn-progress-fill"></div>
+          </div>
+          <span class="learn-progress-text" id="learn-progress-text">0/0</span>
+        </div>
+        <div class="learn-hearts" id="learn-hearts">
+          <span>❤️</span><span>❤️</span><span>❤️</span>
+        </div>
+      </header>
+
+      <!-- Learn: Present New Word -->
+      <div id="learn-present" class="learn-step hidden">
+        <div class="present-card">
+          <div class="present-emoji" id="present-emoji"></div>
+          <div class="present-word-de" id="present-word-de"></div>
+          <div class="present-word-ar" id="present-word-ar"></div>
+          <div class="present-gender" id="present-gender"></div>
+          <div class="present-example">
+            <div class="example-de" id="present-example-de"></div>
+            <div class="example-ar" id="present-example-ar"></div>
+          </div>
+          <button class="speak-btn" id="present-speak-btn" onclick="App.speakWord()">
+            🔊 استمع للنطق
+          </button>
+        </div>
+        <button class="primary-btn" onclick="App.nextLearnStep()">التالي</button>
+      </div>
+
+      <!-- Learn: Multiple Choice -->
+      <div id="learn-mcq" class="learn-step hidden">
+        <div class="mcq-prompt">
+          <p class="mcq-instruction" id="mcq-instruction">ما معنى هذه الكلمة؟</p>
+          <div class="mcq-word" id="mcq-word"></div>
+          <button class="speak-btn-small" onclick="App.speakCurrentWord()">🔊</button>
+        </div>
+        <div class="mcq-options" id="mcq-options"></div>
+      </div>
+
+      <!-- Learn: Typing -->
+      <div id="learn-typing" class="learn-step hidden">
+        <div class="typing-prompt">
+          <p class="typing-instruction" id="typing-instruction">اكتب الكلمة الألمانية:</p>
+          <div class="typing-word-ar" id="typing-word-ar"></div>
+        </div>
+        <div class="typing-input-container">
+          <input type="text" id="typing-input" class="typing-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="اكتب هنا...">
+          <div class="typing-special-chars">
+            <button class="char-btn" onclick="App.insertChar('ä')">ä</button>
+            <button class="char-btn" onclick="App.insertChar('ö')">ö</button>
+            <button class="char-btn" onclick="App.insertChar('ü')">ü</button>
+            <button class="char-btn" onclick="App.insertChar('ß')">ß</button>
+            <button class="char-btn" onclick="App.insertChar('Ä')">Ä</button>
+            <button class="char-btn" onclick="App.insertChar('Ö')">Ö</button>
+            <button class="char-btn" onclick="App.insertChar('Ü')">Ü</button>
+          </div>
+          <button class="primary-btn" id="typing-submit-btn" onclick="App.checkTyping()">تحقق</button>
+        </div>
+        <div id="typing-feedback" class="typing-feedback hidden"></div>
+      </div>
+
+      <!-- Learn: Listening -->
+      <div id="learn-listening" class="learn-step hidden">
+        <div class="listening-prompt">
+          <p class="listening-instruction">ماذا سمعت؟</p>
+          <button class="listen-play-btn" onclick="App.playListeningAudio()">
+            <span class="listen-icon">🔊</span>
+            <span>اضغط للاستماع</span>
+          </button>
+          <button class="listen-slow-btn" onclick="App.playListeningAudioSlow()">🐢 ببطء</button>
+        </div>
+        <div class="mcq-options" id="listening-options"></div>
+      </div>
+
+      <!-- Learn: Match Pairs -->
+      <div id="learn-match" class="learn-step hidden">
+        <p class="match-instruction">طابق الكلمات</p>
+        <div class="match-container">
+          <div class="match-column" id="match-col-de"></div>
+          <div class="match-column" id="match-col-ar"></div>
+        </div>
+      </div>
+
+      <!-- Learn: Reverse MCQ (Arabic to German) -->
+      <div id="learn-reverse-mcq" class="learn-step hidden">
+        <div class="mcq-prompt">
+          <p class="mcq-instruction">ما الترجمة الألمانية؟</p>
+          <div class="mcq-word mcq-word-ar" id="reverse-mcq-word"></div>
+        </div>
+        <div class="mcq-options" id="reverse-mcq-options"></div>
+      </div>
+    </div>
+
+    <!-- ===== SPEED REVIEW SCREEN ===== -->
+    <div id="screen-speed" class="screen">
+      <header class="speed-header">
+        <button class="back-btn" onclick="App.exitLearn()">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19 11H7.83l4.88-4.88a1 1 0 00-1.42-1.41l-6.59 6.59a1 1 0 000 1.41l6.59 6.59a1 1 0 001.41-1.41L7.83 13H19a1 1 0 000-2z"/></svg>
+        </button>
+        <div class="speed-timer" id="speed-timer">
+          <div class="speed-timer-fill" id="speed-timer-fill"></div>
+        </div>
+        <div class="speed-score">
+          <span id="speed-score">0</span>
+          <span>⚡</span>
+        </div>
+      </header>
+      <div class="speed-card">
+        <div class="speed-word" id="speed-word"></div>
+        <div class="speed-options">
+          <button class="speed-option" id="speed-opt-1" onclick="App.speedAnswer(0)"></button>
+          <button class="speed-option" id="speed-opt-2" onclick="App.speedAnswer(1)"></button>
+          <button class="speed-option" id="speed-opt-3" onclick="App.speedAnswer(2)"></button>
+          <button class="speed-option" id="speed-opt-4" onclick="App.speedAnswer(3)"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RESULTS SCREEN ===== -->
+    <div id="screen-results" class="screen">
+      <div class="results-container">
+        <div class="results-icon" id="results-icon">🎉</div>
+        <h2 class="results-title" id="results-title">أحسنت!</h2>
+        <p class="results-subtitle" id="results-subtitle"></p>
+        
+        <div class="results-stats">
+          <div class="result-stat">
+            <span class="result-stat-value" id="result-correct">0</span>
+            <span class="result-stat-label">صحيح ✅</span>
+          </div>
+          <div class="result-stat">
+            <span class="result-stat-value" id="result-incorrect">0</span>
+            <span class="result-stat-label">خطأ ❌</span>
+          </div>
+          <div class="result-stat">
+            <span class="result-stat-value" id="result-xp">0</span>
+            <span class="result-stat-label">نقاط ⭐</span>
+          </div>
+        </div>
+
+        <div class="results-accuracy">
+          <div class="accuracy-ring" id="accuracy-ring">
+            <svg viewBox="0 0 120 120">
+              <circle class="accuracy-bg" cx="60" cy="60" r="52"/>
+              <circle class="accuracy-fill" id="accuracy-circle" cx="60" cy="60" r="52"/>
+            </svg>
+            <span class="accuracy-text" id="accuracy-text">0%</span>
+          </div>
+          <span class="accuracy-label">الدقة</span>
+        </div>
+
+        <div class="results-words-list" id="results-words-list"></div>
+
+        <div class="results-actions">
+          <button class="primary-btn" onclick="App.goHome()">العودة للرئيسية</button>
+          <button class="secondary-btn" onclick="App.continueLearning()">متابعة التعلم</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STATS SCREEN ===== -->
+    <div id="screen-stats" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" onclick="App.goHome()">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M9.29 15.88L13.17 12 9.29 8.12a1 1 0 011.41-1.41l4.59 4.59a1 1 0 010 1.41l-4.59 4.59a1 1 0 01-1.41-1.41z"/></svg>
+        </button>
+        <h2 class="screen-title">الإحصائيات</h2>
+        <div></div>
+      </header>
+      <div class="stats-container">
+        <div class="stats-grid">
+          <div class="stat-card stat-streak">
+            <span class="stat-icon">🔥</span>
+            <span class="stat-value" id="stat-streak">0</span>
+            <span class="stat-label">أيام متتالية</span>
+          </div>
+          <div class="stat-card stat-words">
+            <span class="stat-icon">📝</span>
+            <span class="stat-value" id="stat-words-learned">0</span>
+            <span class="stat-label">كلمات تعلمتها</span>
+          </div>
+          <div class="stat-card stat-xp">
+            <span class="stat-icon">⭐</span>
+            <span class="stat-value" id="stat-total-xp">0</span>
+            <span class="stat-label">إجمالي النقاط</span>
+          </div>
+          <div class="stat-card stat-accuracy">
+            <span class="stat-icon">🎯</span>
+            <span class="stat-value" id="stat-accuracy">0%</span>
+            <span class="stat-label">الدقة الكلية</span>
+          </div>
+          <div class="stat-card stat-sessions">
+            <span class="stat-icon">📖</span>
+            <span class="stat-value" id="stat-sessions">0</span>
+            <span class="stat-label">جلسات التعلم</span>
+          </div>
+          <div class="stat-card stat-mastered">
+            <span class="stat-icon">👑</span>
+            <span class="stat-value" id="stat-mastered">0</span>
+            <span class="stat-label">كلمات أتقنتها</span>
+          </div>
+        </div>
+        <div class="stats-section">
+          <h3>سجل التعلم</h3>
+          <div class="heatmap" id="stats-heatmap"></div>
+        </div>
+        <div class="stats-actions">
+          <button class="danger-btn" onclick="App.resetAllProgress()">إعادة تعيين التقدم</button>
+          <button class="secondary-btn" onclick="App.exportProgress()">تصدير البيانات</button>
+          <button class="secondary-btn" onclick="App.importProgress()">استيراد البيانات</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS SCREEN ===== -->
+    <div id="screen-settings" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" onclick="App.goHome()">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M9.29 15.88L13.17 12 9.29 8.12a1 1 0 011.41-1.41l4.59 4.59a1 1 0 010 1.41l-4.59 4.59a1 1 0 01-1.41-1.41z"/></svg>
+        </button>
+        <h2 class="screen-title">الإعدادات</h2>
+        <div></div>
+      </header>
+      <div class="settings-container">
+        <div class="setting-group">
+          <h3>الهدف اليومي</h3>
+          <div class="setting-options" id="daily-goal-options">
+            <button class="setting-opt" data-goal="5" onclick="App.setDailyGoal(5)">5 كلمات</button>
+            <button class="setting-opt active" data-goal="10" onclick="App.setDailyGoal(10)">10 كلمات</button>
+            <button class="setting-opt" data-goal="15" onclick="App.setDailyGoal(15)">15 كلمة</button>
+            <button class="setting-opt" data-goal="20" onclick="App.setDailyGoal(20)">20 كلمة</button>
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3>سرعة المراجعة السريعة</h3>
+          <div class="setting-options" id="speed-time-options">
+            <button class="setting-opt" data-speed="3" onclick="App.setSpeedTime(3)">3 ثوان</button>
+            <button class="setting-opt active" data-speed="5" onclick="App.setSpeedTime(5)">5 ثوان</button>
+            <button class="setting-opt" data-speed="8" onclick="App.setSpeedTime(8)">8 ثوان</button>
+            <button class="setting-opt" data-speed="10" onclick="App.setSpeedTime(10)">10 ثوان</button>
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3>النطق</h3>
+          <div class="setting-toggle">
+            <span>تشغيل النطق التلقائي</span>
+            <label class="toggle">
+              <input type="checkbox" id="auto-speak-toggle" checked onchange="App.toggleAutoSpeak()">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-toggle">
+            <span>سرعة النطق</span>
+            <input type="range" id="speak-rate" min="0.5" max="1.5" step="0.1" value="0.8" onchange="App.setSpeakRate(this.value)">
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3>المظهر</h3>
+          <div class="setting-options" id="theme-options">
+            <button class="setting-opt active" data-theme="dark" onclick="App.setTheme('dark')">🌙 داكن</button>
+            <button class="setting-opt" data-theme="light" onclick="App.setTheme('light')">☀️ فاتح</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="nav-item active" onclick="App.goHome()" data-tab="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">الرئيسية</span>
+      </button>
+      <button class="nav-item" onclick="App.showStats()" data-tab="stats">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">الإحصائيات</span>
+      </button>
+      <button class="nav-item" onclick="App.showSettings()" data-tab="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">الإعدادات</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden">
+    <span id="toast-text"></span>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Import File Input (hidden) -->
+  <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="App.handleImport(event)">
+
+  <script src="data.js"></script>
+  <script src="srs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
