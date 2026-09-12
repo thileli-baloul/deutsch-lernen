@@ -1,4 +1,4 @@
-const CACHE_NAME = 'deutsch-lernen-v1';
+const CACHE_NAME = 'deutsch-lernen-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -6,7 +6,9 @@ const ASSETS = [
   './app.js',
   './data.js',
   './srs.js',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
